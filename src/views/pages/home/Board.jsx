@@ -9,11 +9,11 @@ const Board = ({data , toggleFavorite}) => {
             <figure><img src="https://api.lorem.space/image/burger?w=400&h=300&hash=8B7BCDC2" alt="Shoes" /></figure>
             <div class="card-body">
                 <h2 class="card-title">{title}</h2>
-                <p>{description}</p>
-                <div className='absolute bottom-0 left-0 p-3 text-sm'>
+                <p className="w-52 text-ellipsis overflow-hidden">{description}</p>
+                <div className='absolute bottom-0 right-0 p-3 text-xs'>
                     <ReactTimeAgo date={createTime} locale="en-US"/>
                 </div>
-                <span onClick={()=>toggleFavorite(id)} className='absolute bottom-0 right-0 p-3'>
+                <span onClick={()=>toggleFavorite(id)} className='absolute top-0 right-0 p-3'>
                     {favorite 
                     ?
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">

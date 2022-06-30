@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AddBoard = () => {
+const AddBoard = ({register, handleSubmit, createBoardHandler}) => {
     return (
         <>
             <label for="my-modal-3" class="card bg-base-100 shadow-xl image-full cursor-pointer">
@@ -22,20 +22,20 @@ const AddBoard = () => {
                     <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
 
                     <h3 class="text-lg font-bold">Create new board!</h3>
-                    <form>
+                    <form onSubmit={handleSubmit(createBoardHandler)}>
                         <div class="form-control w-full">
                             <label htmlFor="title" class="label font-semibold">Title:</label>
-                            <input type="text" class="input input-sm input-bordered w-full" id='title' />
+                            <input type="text" {...register("title")} class="input input-sm input-bordered w-full" id='title' />
                         </div>
                         <div class="form-control w-full">
                             <label htmlFor="description" class="label font-semibold">Description:</label>
-                            <textarea name="" class="textarea textarea-bordered" id='description' rows="2"></textarea>
+                            <textarea {...register("description")} class="textarea textarea-bordered" id='description' rows="2"></textarea>
                         </div>
                         <div class="form-control w-full">
                             <label htmlFor="deadline" class="label font-semibold">Deadline:</label>
-                            <input type="date" class="input input-sm input-bordered w-full" />
+                            <input type="date" {...register("deadline")} class="input input-sm input-bordered w-full" />
                         </div>
-                        <input type="hidden" name="createTime" />
+                        <input type="hidden" defaultValue={new Date()} {...register("createTime")} />
                         <button type='submit' className='btn btn-sm w-full mt-4'>Add</button>
                     </form>
                 </div>
