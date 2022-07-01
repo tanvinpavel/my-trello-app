@@ -4,26 +4,26 @@
        "title":"my-trello",
        "description":"simple description",
        "createTime":"Wed Jun 29 2022 20:09:09 GMT+0600",
-       "deadline":"some date",
-       "completion":50,
-       "status":"todo"
+       "deadline":"Thu Jun 30 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
+       "completion":100,
+       "status":"done"
     },
     {
        "id":"2",
        "title":"my-trello",
        "description":"simple description",
        "createTime":"Wed Jun 29 2022 20:09:09 GMT+0600",
-       "deadline":"some date",
+       "deadline":"Wed Jun 29 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
        "completion":50,
-       "status":"todo"
+       "status":"doing"
     },
     {
        "id":"3",
        "title":"my-trello",
        "description":"simple description",
        "createTime":"Wed Jun 29 2022 20:09:09 GMT+0600",
-       "deadline":"some date",
-       "completion":50,
+       "deadline":"Mon Jun 27 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
+       "completion":15,
        "status":"todo"
     },
     {
@@ -31,8 +31,8 @@
        "title":"my-trello",
        "description":"simple description",
        "createTime":"Wed Jun 29 2022 20:09:09 GMT+0600",
-       "deadline":"some date",
-       "completion":50,
-       "status":"todo"
+       "deadline":"Thu Jun 30 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
+       "completion":100,
+       "status":"done"
     }
 ]

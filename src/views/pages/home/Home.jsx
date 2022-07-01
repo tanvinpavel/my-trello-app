@@ -40,7 +40,7 @@ const Home = () => {
 }
 
   return (
-      <div className="container mx-auto px-10 mt-10">
+      <div className="container mx-auto px-10 my-10">
           <h1 className="text-xl font-bold mb-4">Your All Board</h1>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-4">
               <AddBoard register={register} handleSubmit={handleSubmit} createBoardHandler={createBoardHandler}/>

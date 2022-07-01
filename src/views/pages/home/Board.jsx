@@ -5,7 +5,7 @@ const Board = ({data , toggleFavorite}) => {
     const {id, title, description, createTime, favorite} = data;
     
     return (
-        <div class="card bg-base-100 shadow-xl image-full relative">
+        <div class="card bg-base-100 h-36 shadow-xl image-full relative">
             <figure><img src="https://api.lorem.space/image/burger?w=400&h=300&hash=8B7BCDC2" alt="Shoes" /></figure>
             <div class="card-body">
                 <h2 class="card-title">{title}</h2>

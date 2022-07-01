@@ -1,0 +1,105 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from "react-hook-form";
+
+
+const TableView = ({todos, setTodos, queryValue, backup}) => {
+
+    const {register, handleSubmit} = useForm();
+    let [selectedItem, setSelectedItem] = useState(0);
+    const selectAll = useRef();
+
+    const checkUncheckHandler = (e) => {
+        const { id, checked } = e.target;
+    
+        if(id === 'allSelect'){
+          let x = 0;
+          let tempData = todos.filter((user)=> user.title.toLowerCase().includes(queryValue)).map(item => {
+            if(checked){
+              setSelectedItem(++x);
+            }else{
+              setSelectedItem(0);
+            }
+            return {...item, isChecked: checked};
+          });
+          const restData = backup.filter((user)=> !user.title.toLowerCase().includes(queryValue));
+          setTodos([...tempData, ...restData]);
+        }else{
+            if(checked){
+                selectAll.current.checked = true;
+                selectAll.current.indeterminate = true;
+                setSelectedItem((prev) => {
+                    if(prev === (todos.length - 1)){
+                        selectAll.current.indeterminate = false;
+                        selectAll.current.checked = true;
+                    };
+                    return prev+1;
+                });
+            }else{
+                setSelectedItem((prev) => {
+                    if(prev > 1) selectAll.current.indeterminate = true;
+                    
+                    if(prev === 1) selectAll.current.indeterminate = false;
+                    if((prev-1) === 0) selectAll.current.checked = false;
+                    
+                    return prev-1;
+                });
+            };
+            
+            let tempCategory = todos.map(item => item.id === id ? {...item, isChecked: checked} : item);
+            setTodos(tempCategory);
+        }
+    };
+
+    return (
+        <div className='mt-5'>
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" {...register('objectIds')} id="allSelect" defaultValue="undefined" ref={selectAll} class="checkbox" onChange={checkUncheckHandler} />
+                            </th>
+                            <th>Title</th>
+                            <th>Progress</th>
+                            <th>Dead Line</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            todos.filter(todo => todo.title.toLowerCase().includes(queryValue)).map(todo => <tr>
+                                <td className='p-3'>
+                                    <input type="checkbox" id={todo.id} className="checkbox" value={todo.id} {...register("objectIds")} checked={todo?.isChecked || false} onChange={checkUncheckHandler} />
+                                </td>
+                                <td className='p-3'>
+                                    <p className='font-semibold'>{todo.title}</p>
+                                    <p className='text-xs'>{new Date(todo.createTime).toDateString()}</p>
+                                </td>
+                                <td className='p-3'>
+                                    <span className='block leading-none pt-1 font-semibold'>{todo.completion}%</span>
+                                    <progress class="progress progress-success w-10/12" value={todo.completion} max="100"></progress>   
+                                </td>
+                                <td className='p-3 font-semibold text-sm'>{new Date(todo.deadline).toDateString()}</td>
+                                <td className='p-3'>
+                                    <span className='flex content-center items-center'>
+                                        {
+                                            todo.status === 'todo' && <span className='rounded-full w-16 py-1 text-center bg-rose-100 text-xs font-medium text-rose-500'>To Do</span>
+                                        }
+                                        {
+                                            todo.status === 'doing' && <span className='rounded-full w-16 py-1 text-center bg-yellow-100 text-xs font-medium text-yellow-500'>Doing</span>
+                                        }
+                                        {
+                                            todo.status === 'done' && <span className='rounded-full w-16 py-1 text-center bg-green-100 text-xs font-medium text-green-500'>Done</span>
+                                        }
+                                    </span>
+                                </td>
+                            </tr>)
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
+
+export default TableView;

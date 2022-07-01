@@ -3,7 +3,7 @@ import React from 'react';
 const AddBoard = ({register, handleSubmit, createBoardHandler}) => {
     return (
         <>
-            <label for="my-modal-3" class="card bg-base-100 shadow-xl image-full cursor-pointer">
+            <label for="my-modal-3" class="card bg-base-100 h-36 shadow-xl image-full cursor-pointer">
                 <figure><img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" /></figure>
                 <div class="card-body">
                     <h3 className='text-lg font-semibold'>Add Board</h3>
