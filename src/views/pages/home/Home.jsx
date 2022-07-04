@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { addBoard, isExists } from '../../../utility';
 import AddBoard from "./AddBoard";
 import Board from "./Board";
-import { addBoard, isExists } from '../../../utility';
-import { useForm } from "react-hook-form";
 
 const Home = () => {
   const [todos, setTodo] = useState([]);
@@ -40,12 +40,12 @@ const Home = () => {
 }
 
   return (
-      <div className="container mx-auto px-10 my-10">
+      <div className="container mx-auto sm:px-10 px-5 my-10">
           <h1 className="text-xl font-bold mb-4">Your All Board</h1>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-row gap-4">
+          <div className="grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 sm:gap-4 grid-cols-1 gap-2">
               <AddBoard register={register} handleSubmit={handleSubmit} createBoardHandler={createBoardHandler}/>
               {
-                  todos.map(item => <Board data={item} toggleFavorite={toggleFavorite}/>)
+                  todos.map(item => <Board key={item.id} data={item} toggleFavorite={toggleFavorite}/>)
               }
           </div>
       </div>

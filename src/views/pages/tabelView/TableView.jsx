@@ -1,12 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
 
 
-const TableView = ({todos, setTodos, queryValue, backup}) => {
+const TableView = ({todos, setTodos, queryValue, backup, register, selectAll}) => {
 
-    const {register, handleSubmit} = useForm();
     let [selectedItem, setSelectedItem] = useState(0);
-    const selectAll = useRef();
 
     const checkUncheckHandler = (e) => {
         const { id, checked } = e.target;
@@ -52,12 +49,12 @@ const TableView = ({todos, setTodos, queryValue, backup}) => {
 
     return (
         <div className='mt-5'>
-            <div class="overflow-x-auto">
-                <table class="table table-zebra w-full">
+            <div className="overflow-x-auto">
+                <table className="table table-zebra w-full">
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" {...register('objectIds')} id="allSelect" defaultValue="undefined" ref={selectAll} class="checkbox" onChange={checkUncheckHandler} />
+                                <input type="checkbox" {...register('objectIds')} id="allSelect" defaultValue="undefined" ref={selectAll} className="checkbox" onChange={checkUncheckHandler} />
                             </th>
                             <th>Title</th>
                             <th>Progress</th>
@@ -77,7 +74,7 @@ const TableView = ({todos, setTodos, queryValue, backup}) => {
                                 </td>
                                 <td className='p-3'>
                                     <span className='block leading-none pt-1 font-semibold'>{todo.completion}%</span>
-                                    <progress class="progress progress-success w-10/12" value={todo.completion} max="100"></progress>   
+                                    <progress className="progress progress-success w-10/12" value={todo.completion} max="100"></progress>   
                                 </td>
                                 <td className='p-3 font-semibold text-sm'>{new Date(todo.deadline).toDateString()}</td>
                                 <td className='p-3'>

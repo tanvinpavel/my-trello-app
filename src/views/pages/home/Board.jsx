@@ -1,14 +1,13 @@
-import React from 'react';
-import ReactTimeAgo from 'react-time-ago'
+import ReactTimeAgo from 'react-time-ago';
 
 const Board = ({data , toggleFavorite}) => {
     const {id, title, description, createTime, favorite} = data;
     
     return (
-        <div class="card bg-base-100 h-36 shadow-xl image-full relative">
-            <figure><img src="https://api.lorem.space/image/burger?w=400&h=300&hash=8B7BCDC2" alt="Shoes" /></figure>
-            <div class="card-body">
-                <h2 class="card-title">{title}</h2>
+        <div className="p-0 card card-compact bg-base-100 shadow-xl image-full relative">
+            <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+            <div className="card-body">
+                <h2 className="card-title">{title}</h2>
                 <p className="w-52 text-ellipsis overflow-hidden">{description}</p>
                 <div className='absolute bottom-0 right-0 p-3 text-xs'>
                     <ReactTimeAgo date={createTime} locale="en-US"/>

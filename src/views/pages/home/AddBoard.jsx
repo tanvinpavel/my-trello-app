@@ -1,11 +1,10 @@
-import React from 'react';
 
 const AddBoard = ({register, handleSubmit, createBoardHandler}) => {
     return (
         <>
-            <label for="my-modal-3" class="card bg-base-100 h-36 shadow-xl image-full cursor-pointer">
-                <figure><img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" /></figure>
-                <div class="card-body">
+            <label htmlFor="my-modal-3" className="card card-compact p-0 shadow-xl image-full cursor-pointer">
+                <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+                <div className="card-body">
                     <h3 className='text-lg font-semibold'>Add Board</h3>
                     <div className='w-full h-full flex justify-center items-center'>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -16,24 +15,24 @@ const AddBoard = ({register, handleSubmit, createBoardHandler}) => {
             </label>
 
             {/* modal */}
-            <input type="checkbox" id="my-modal-3" class="modal-toggle" />
-            <div class="modal">
-                <div class="modal-box relative">
-                    <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+            <div className="modal">
+                <div className="modal-box relative">
+                    <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
 
-                    <h3 class="text-lg font-bold">Create new board!</h3>
+                    <h3 className="text-lg font-bold">Create new board!</h3>
                     <form onSubmit={handleSubmit(createBoardHandler)}>
-                        <div class="form-control w-full">
-                            <label htmlFor="title" class="label font-semibold">Title:</label>
-                            <input type="text" {...register("title")} class="input input-sm input-bordered w-full" id='title' />
+                        <div className="form-control w-full">
+                            <label htmlFor="title" className="label font-semibold">Title:</label>
+                            <input type="text" {...register("title")} className="input input-sm input-bordered w-full" id='title' />
                         </div>
-                        <div class="form-control w-full">
-                            <label htmlFor="description" class="label font-semibold">Description:</label>
-                            <textarea {...register("description")} class="textarea textarea-bordered" id='description' rows="2"></textarea>
+                        <div className="form-control w-full">
+                            <label htmlFor="description" className="label font-semibold">Description:</label>
+                            <textarea {...register("description")} className="textarea textarea-bordered" id='description' rows="2"></textarea>
                         </div>
-                        <div class="form-control w-full">
-                            <label htmlFor="deadline" class="label font-semibold">Deadline:</label>
-                            <input type="date" {...register("deadline")} class="input input-sm input-bordered w-full" />
+                        <div className="form-control w-full">
+                            <label htmlFor="deadline" className="label font-semibold">Deadline:</label>
+                            <input type="date" {...register("deadline")} className="input input-sm input-bordered w-full" />
                         </div>
                         <input type="hidden" defaultValue={new Date()} {...register("createTime")} />
                         <button type='submit' className='btn btn-sm w-full mt-4'>Add</button>

@@ -6,16 +6,21 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
+import TaskContext from './context/TaskContext';
 
 TimeAgo.addDefaultLocale(en)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
+    <DndProvider backend={HTML5Backend}>
+      <TaskContext>
         <App />
-    </BrowserRouter>
-  </React.StrictMode>
+      </TaskContext>
+    </DndProvider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
