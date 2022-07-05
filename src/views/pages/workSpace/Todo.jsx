@@ -21,16 +21,16 @@ const Todo = () => {
     }
 
     return (
-        <div className='rounded-md p-4 shadow-md bg-slate-100'>
+        <div className='rounded-md p-4 shadow-md bg-rose-100'>
             <div className='flex justify-between items-center'>
-                <h1 className='text-lg font-bold'>To Do</h1>
+                <h1 className='text-lg font-bold text-rose-500'>To Do</h1>
                 <span onClick={()=>{setToggleAddBtn(!toggleAddBtn)}}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-gray-500 hover:text-gray-700 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-rose-500 hover:scale-110 hover:text-rose-700 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                     </svg>
                 </span>
             </div>
-            <div>{
+            <div className='rounded-md bg-white my-2'>{
                 data?.tasks?.map(item => item.progressStatus === 'todo' && <Task key={item.id} data={item}/>)
             }</div>
             {
@@ -38,8 +38,8 @@ const Todo = () => {
                     <form onSubmit={handleSubmit(addTaskHandler)}>
                         <textarea id='todo' rows="3" placeholder='Add a task' {...register("title")} data-autosize="true" className="mt-3 block w-full px-3 p-2 bg-white rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none resize-none"/>
                         <input type="hidden" defaultValue="todo" {...register("progressStatus")} />
-                        <button type='submit' className='btn btn-sm mt-2'>Add</button>
-                        <span onClick={()=>{setToggleAddBtn(!toggleAddBtn)}} className='ml-2 hover:font-semibold cursor-pointer'>Cancel</span>
+                        <button type='submit' className='btn btn-sm text-xs mt-2'>Add</button>
+                        <span onClick={()=>{setToggleAddBtn(!toggleAddBtn)}} className='ml-2 text-xs hover:font-semibold cursor-pointer'>Cancel</span>
                     </form>
                 </div>
             }

@@ -6,8 +6,6 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { DndProvider } from 'react-dnd'
 import TaskContext from './context/TaskContext';
 
 TimeAgo.addDefaultLocale(en)
@@ -15,11 +13,9 @@ TimeAgo.addDefaultLocale(en)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <DndProvider backend={HTML5Backend}>
-      <TaskContext>
-        <App />
-      </TaskContext>
-    </DndProvider>
+    <TaskContext>
+      <App />
+    </TaskContext>
   </BrowserRouter>
 );
 

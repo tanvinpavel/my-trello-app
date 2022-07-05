@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useTaskContext from '../../../hooks/useTaskContext';
 import Doing from './Doing';
 import Done from './Done';
