@@ -4,6 +4,7 @@ import useTrelloContext from '../../../hooks/useTrelloContext';
 import { deleteBoard, isExists } from '../../../utility';
 import GridView from './gridView/GridView';
 import TableView from './tabelView/TableView';
+import "./manageBoard.css";
 
 
 const ManageBoard = () => {
@@ -18,17 +19,20 @@ const ManageBoard = () => {
             const newData = isExists() || [];
             setTodos(newData);
         }
+
     }, [myAllBoard.length]);
     
     const [todos, setTodos] = useState(myAllBoard || []);
 
     const deleteGridSelectedItemHandler = (data) => {
         const {objectIds} = data;
+        console.log(objectIds);
         const restData = todos.filter(item => !objectIds.includes(item.id));
         console.log(restData);
         const updatedData = deleteBoard(restData);
         setTodos(updatedData);
     }
+
     const deleteTableSelectedItemHandler = (data) => {
         const {objectIds} = data;
         const restData = todos.filter(item => !objectIds.includes(item.id));

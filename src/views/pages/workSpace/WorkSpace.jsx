@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useTrelloContext from '../../../hooks/useTrelloContext';
-import { isExists, updateBoard } from '../../../utility';
+import { isExists, updateBoard, completionPercentage } from '../../../utility';
 import Doing from './col/Doing';
 import Done from './col/Done';
 import Todo from './col/Todo';
@@ -15,37 +15,58 @@ const WorkSpace = () => {
 
     useEffect(() => {
         if(!myAllBoard.length){
-            const allBoards = isExists() || [];
-            let singleData = allBoards.find(({id}) => id === search);
-            console.log(singleData);
-            setData(singleData?.tasks);
-            setSingleBoard(singleData);
+                const allBoards = isExists() || [];
+                let singleData = allBoards.find(({id}) => id === search);
+                
+                setMyAllBoard(allBoards);
+                
+                setData(singleData?.tasks || []);
+                setSingleBoard(singleData || {});
         }else{
-            let singleData = myAllBoard.find(({id}) => id === search);
-            console.log(singleData);
-            setData(singleData?.tasks || [])
-            setSingleBoard(singleData);
+            let singleData = myAllBoard.find(({id}) => id === search) || {};
+
+            setData(singleData?.tasks || []);
+            setSingleBoard(singleData || {});
         }
-    }, [myAllBoard, search, setData]);
+    }, [myAllBoard, search, setData, setMyAllBoard]);
 
     const onDropFunc = (item, monitor, status) => {
-        setData(prevState => {
-            const newItems = prevState.filter(i => i.id !== item.id).concat({ ...item, progressStatus: status });
-            // console.log(newItems);
-            return [ ...newItems ];
-        });
+        if(item.progressStatus !== status){
+            setData(prevState => {
+                const newItems = prevState.filter(i => i.id !== item.id).concat({ ...item, progressStatus: status });
+                
+                const updatedData = myAllBoard.map(item => {
+                    if(item.id === search){
+                        item.tasks = newItems;
+                        item.completion =  completionPercentage(item.tasks);
+                    }
+        
+                    return item;
+                });
+                
+                updateBoard(updatedData);
+
+                return [ ...newItems ];
+            });
+        }else{
+            const updatedData = myAllBoard.map(item => {
+                if(item.id === boardId){
+                    item.tasks = data;
+                }
+    
+                return item;
+            });
+            updateBoard(updatedData);
+        }
     };
 
     const moveItemFunc = (dragIndex, hoverIndex) => {
-        console.log(dragIndex, hoverIndex);
-        const item = data.todo[dragIndex];
-        console.log(item);
-        
+        const item = data[dragIndex];
         setData(prevState => {
-            // const newItems = prevState.filter((item, index) => index !== dragIndex);
-            // newItems.splice(hoverIndex, 0, item);
-            // return  [ ...newItems ];
-            console.log(prevState.todo);
+            const newItems = prevState.filter((i, idx) => idx !== dragIndex);
+            newItems.splice(hoverIndex, 0, item);
+            
+            return  [ ...newItems ];
         });
     };
 
@@ -65,9 +86,9 @@ const WorkSpace = () => {
           }
           return todo;
         });
-
+        
         setMyAllBoard(updatedData);
-        updateBoard(updatedData)
+        updateBoard(updatedData);
     }
 
     return (
@@ -75,7 +96,7 @@ const WorkSpace = () => {
             {/* action bar */}
             <div className="flex items-center mb-10 gap-5">
                 {
-                    boardId == true ||
+                    boardId > 0 ||
                     <select  onChange={(e)=>selectHandler(e)} className="select select-sm select-primary w-full max-w-xs">
                         <option value="null">Board</option>
                         {
@@ -83,8 +104,9 @@ const WorkSpace = () => {
                         }
                     </select>
                 }
+                
                 {
-                    singleBoard &&
+                    Object.keys(singleBoard).length > 0 &&
                     <>
                         <h1 className="text-xl font-bold">Board: {singleBoard?.title}</h1>
                         <span onClick={()=>toggleFavorite(search)} className='cursor-pointer p-1 rounded-md bg-slate-600'>
@@ -104,15 +126,11 @@ const WorkSpace = () => {
             </div>
 
             
-            {
-                Object.keys(data).length > 0 ? 
-                    <div className="flex items-start gap-4 workSpace-height">
-                        <Todo boardId={boardId} />
-                        <Doing moveItemFunc={moveItemFunc}/>
-                        <Done moveItemFunc={moveItemFunc}/>
-                    </div>
-                : <h1>Loading...</h1>
-            }
+            <div className="flex items-start gap-4 workSpace-height">
+                <Todo onDropFunc={onDropFunc} moveItemFunc={moveItemFunc} boardId={boardId}/>
+                <Doing onDropFunc={onDropFunc} moveItemFunc={moveItemFunc} boardId={boardId}/>
+                <Done onDropFunc={onDropFunc} moveItemFunc={moveItemFunc} boardId={boardId}/>
+            </div>
         </div>
     );
 };

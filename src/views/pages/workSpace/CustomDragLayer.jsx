@@ -8,8 +8,9 @@ const layerStyles = {
     zIndex: 100,
     left: 0,
     top: 0,
-    width: '392px',
+    width: '349px',
     height: '100%',
+    rotate: '-3deg',
   }
   
   function getItemStyles(initialOffset, currentOffset) {
@@ -40,7 +41,7 @@ const CustomDragLayer = ({progressBarObj}) => {
   }
 
   return (
-    <div style={layerStyles}>
+    <div style={layerStyles} className="cursor-move">
       <div
         style={getItemStyles(initialOffset, currentOffset)}
       >

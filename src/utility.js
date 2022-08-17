@@ -34,9 +34,22 @@ function deleteBoard(data){
     return data;
 }
 
+function completionPercentage(data){
+    const totalTask = data.length;
+    const totalDoingTask = data.filter(({progressStatus}) => progressStatus === 'doing').length;
+    const totalDoneTask = data.filter(({progressStatus}) => progressStatus === 'done').length;
+
+    const percentageRate = 50 / totalTask;
+
+    const totalCompletion = (percentageRate * totalDoingTask) + ((percentageRate*2) * totalDoneTask);
+
+    return Math.round(totalCompletion);
+}
+
 export {
     addBoard,
     isExists,
     updateBoard,
-    deleteBoard
+    deleteBoard,
+    completionPercentage
 };
