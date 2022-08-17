@@ -1,18 +1,21 @@
+import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago';
 
 const Board = ({data , toggleFavorite}) => {
     const {id, title, description, createTime, favorite} = data;
     
     return (
-        <div className="p-0 card card-compact bg-base-100 shadow-xl image-full relative">
+        <div className="p-0 card card-height card-compact bg-base-100 shadow-xl image-full relative card-height">
             <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
             <div className="card-body">
-                <h2 className="card-title">{title}</h2>
-                <p className="w-52 text-ellipsis overflow-hidden">{description}</p>
+                <Link to={`/progress/${id}`} className="cursor-pointer">
+                    <h2 className="card-title">{title}</h2>
+                    <p className="w-52 text-ellipsis overflow-hidden">{description}</p>
+                </Link>
                 <div className='absolute bottom-0 right-0 p-3 text-xs'>
                     <ReactTimeAgo date={createTime} locale="en-US"/>
                 </div>
-                <span onClick={()=>toggleFavorite(id)} className='absolute top-0 right-0 p-3'>
+                <span onClick={()=>toggleFavorite(id)} className='absolute cursor-pointer top-0 right-0 p-3'>
                     {favorite 
                     ?
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">

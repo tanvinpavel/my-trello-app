@@ -11,10 +11,10 @@ function addBoard(data){
     const haveData = isExists();
 
     if(haveData){
-        const addNewData = [...haveData, data];
-        const jsonData = JSON.stringify(addNewData);
+        const updatedData = [...haveData, data];
+        const jsonData = JSON.stringify(updatedData);
         localStorage.setItem('my-board', jsonData);
-        return addNewData;
+        return updatedData;
     }else{
         const newData = [data];
         const jsonData = JSON.stringify(newData);
@@ -23,7 +23,20 @@ function addBoard(data){
     }
 }
 
+function updateBoard(data){
+    const jsonData = JSON.stringify(data);
+    localStorage.setItem('my-board', jsonData);
+}
+
+function deleteBoard(data){
+    const jsonData = JSON.stringify(data);
+    localStorage.setItem('my-board', jsonData);
+    return data;
+}
+
 export {
     addBoard,
-    isExists
+    isExists,
+    updateBoard,
+    deleteBoard
 };

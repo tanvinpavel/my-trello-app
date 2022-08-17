@@ -3,7 +3,7 @@ const AddBoard = ({register, handleSubmit, createBoardHandler}) => {
     return (
         <>
             <label htmlFor="my-modal-3" className="card card-compact p-0 shadow-xl image-full cursor-pointer">
-                <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+                {/* <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure> */}
                 <div className="card-body">
                     <h3 className='text-lg font-semibold'>Add Board</h3>
                     <div className='w-full h-full flex justify-center items-center'>
@@ -34,7 +34,6 @@ const AddBoard = ({register, handleSubmit, createBoardHandler}) => {
                             <label htmlFor="deadline" className="label font-semibold">Deadline:</label>
                             <input type="date" {...register("deadline")} className="input input-sm input-bordered w-full" />
                         </div>
-                        <input type="hidden" defaultValue={new Date()} {...register("createTime")} />
                         <button type='submit' className='btn btn-sm w-full mt-4'>Add</button>
                     </form>
                 </div>

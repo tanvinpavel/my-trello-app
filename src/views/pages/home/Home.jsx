@@ -1,40 +1,47 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { addBoard, isExists } from '../../../utility';
+import useTrelloContext from "../../../hooks/useTrelloContext";
+import { addBoard, isExists, updateBoard } from '../../../utility';
 import AddBoard from "./AddBoard";
 import Board from "./Board";
 
 const Home = () => {
-  const [todos, setTodo] = useState([]);
-  const [backup, setBackup] = useState([]);
+  const {myAllBoard, setMyAllBoard} = useTrelloContext();
   const { register, handleSubmit, reset } = useForm();
+  
 
   useEffect(() => {
-    fetch('./api.json')
-      .then(res => res.json())
-      .then(data => {
-        const newData = isExists() || [];
-        setTodo([...data, ...newData]);
-        setBackup(data);
-      })
-  }, []);
+      const newData = isExists() || [];
+      setMyAllBoard(newData);
+  }, [setMyAllBoard]);
 
   const toggleFavorite = (id) => {
-        const clickedObj = todos.find(todo => todo.id === id);
+        const clickedObj = myAllBoard.find(todo => todo.id === id);
         
-        const updatedData = todos.map(todo => {
+        const updatedData = myAllBoard.map(todo => {
           if(todo.id === id){
             clickedObj.favorite = !clickedObj.favorite;
           }
           return todo;
         });
-        setTodo(updatedData);
+
+        updateBoard(updatedData);
+        setMyAllBoard(updatedData);
   }
 
-  const createBoardHandler = (data) => {
-    console.log(data);
-    addBoard(data);
-    setTodo([...todos, ...[data]]);
+  const createNewBoardHandler = (data) => {
+    const newBoard = {
+      id: Math.round(Math.random()*1000),
+      createTime: new Date().getTime(),
+      completion: 0,
+      status: 'todo',
+      favorite: false,
+      tasks: [],
+      ...data,
+    }
+    console.log(newBoard);
+    const updatedData = addBoard(newBoard);
+    setMyAllBoard(updatedData);
 
     reset();
 }
@@ -43,9 +50,9 @@ const Home = () => {
       <div className="container mx-auto sm:px-10 px-5 my-10">
           <h1 className="text-xl font-bold mb-4">Your All Board</h1>
           <div className="grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 sm:gap-4 grid-cols-1 gap-2">
-              <AddBoard register={register} handleSubmit={handleSubmit} createBoardHandler={createBoardHandler}/>
+              <AddBoard register={register} handleSubmit={handleSubmit} createBoardHandler={createNewBoardHandler}/>
               {
-                  todos.map(item => <Board key={item.id} data={item} toggleFavorite={toggleFavorite}/>)
+                  myAllBoard.map(item => <Board key={item.id} data={item} toggleFavorite={toggleFavorite}/>)
               }
           </div>
       </div>

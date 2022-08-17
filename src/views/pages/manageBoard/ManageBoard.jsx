@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { isExists } from '../../../utility';
-import GridView from '../gridView/GridView';
-import TableView from '../tabelView/TableView';
+import useTrelloContext from '../../../hooks/useTrelloContext';
+import { deleteBoard, isExists } from '../../../utility';
+import GridView from './gridView/GridView';
+import TableView from './tabelView/TableView';
 
 
 const ManageBoard = () => {
@@ -10,41 +11,46 @@ const ManageBoard = () => {
     const [queryValue, setQueryValue] = useState('');
     const {register, handleSubmit} = useForm();
     const selectAll = useRef();
+    const {myAllBoard} = useTrelloContext();
 
-    const [todos, setTodos] = useState([]);
-    const [backup, setBackup] = useState([]);
-
-    useEffect(() => {
-        fetch('./api.json')
-        .then(res => res.json())
-        .then(data => {
+    useEffect(()=>{
+        if(!myAllBoard.length){
             const newData = isExists() || [];
-            setTodos([...data, ...newData]);
-            setBackup(data);
-        })
-    }, []);
+            setTodos(newData);
+        }
+    }, [myAllBoard.length]);
+    
+    const [todos, setTodos] = useState(myAllBoard || []);
 
-    const deleteSelectedItemHandler = (data) => {
+    const deleteGridSelectedItemHandler = (data) => {
         const {objectIds} = data;
-
         const restData = todos.filter(item => !objectIds.includes(item.id));
-        setTodos(restData);
-        selectAll.current.checked = false;
-        selectAll.current.indeterminate = false;
+        console.log(restData);
+        const updatedData = deleteBoard(restData);
+        setTodos(updatedData);
+    }
+    const deleteTableSelectedItemHandler = (data) => {
+        const {objectIds} = data;
+        const restData = todos.filter(item => !objectIds.includes(item.id));
+        console.log(restData);
+        const updatedData = deleteBoard(restData);
+        setTodos(updatedData);
+        selectAll.current.checked = undefined;
+        selectAll.current.indeterminate = undefined;
     }
 
     const deleteCompletedItem = () => {
-        const uncompletedItem = todos.filter(item => item.status !== 'done');
-        setTodos(uncompletedItem);
+        const restData = todos.filter(item => item.status !== 'done');
+        setTodos(restData);
         // to do persistence delete
     }
 
     const filterHandler = (e) => {
         const filterType = e.target.innerHTML.toLowerCase();
-        const allData = backup;
+        const allData = myAllBoard;
         
         if(filterType === "all"){
-            setTodos(backup);
+            setTodos(myAllBoard);
         }else if(filterType === 'running'){
             let filterData = allData.filter(item => item.status === 'doing');
             setTodos(filterData);
@@ -61,7 +67,7 @@ const ManageBoard = () => {
         <div className='container mx-auto my-10 px-10'>
             <h1 className="text-xl font-bold mb-4">Manage Board</h1>
 
-            {/* action bar */}
+            {/* Search bar */}
             <div className="form-control w-5/12">
                 <div className="input-group">
                     <span className="bg-white border-2 border-gray-300 border-r-0">
@@ -71,8 +77,8 @@ const ManageBoard = () => {
                 </div>
             </div>
 
-            {/* action bar */}
-            <div className='flex justify-between mt-10'>
+            {/* Action bar */}
+            <div className='flex flex-wrap gap-y-2 gap-x-2 lg:gap-x-0  lg:justify-between mt-10'>
                 <div className="btn-group">
                     <button onClick={filterHandler} className="btn btn-active btn-sm text-xs">All</button>
                     <button onClick={filterHandler} className="btn btn-sm text-xs">Running</button>
@@ -108,11 +114,13 @@ const ManageBoard = () => {
             </div>
 
             {/* grid view or list view */}
-            <form id="boardManageForm" onSubmit={handleSubmit(deleteSelectedItemHandler)}>
             {
-                view === 'grid' ? <GridView queryValue={queryValue} register={register} setTodos={setTodos} backup={backup} todos={todos}/> : <TableView backup={backup} selectAll={selectAll} register={register} setTodos={setTodos} queryValue={queryValue} todos={todos}/>
+                view === 'grid' ? <form id="boardManageForm" onSubmit={handleSubmit(deleteGridSelectedItemHandler)}>
+                    <GridView queryValue={queryValue} register={register} setTodos={setTodos} todos={todos}/>
+                </form> : <form id="boardManageForm" onSubmit={handleSubmit(deleteTableSelectedItemHandler)}>
+                    <TableView backup={myAllBoard} selectAll={selectAll} register={register} setTodos={setTodos} queryValue={queryValue} todos={todos}/>
+                </form>
             }
-            </form>
         </div>
     );
 };

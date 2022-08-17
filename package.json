@@ -8,11 +8,14 @@
     "@testing-library/user-event": "^13.5.0",
     "daisyui": "^2.17.0",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-time-ago": "^7.2.1",
+    "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

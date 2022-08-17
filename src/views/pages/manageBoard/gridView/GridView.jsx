@@ -1,18 +1,22 @@
+import { Link } from "react-router-dom";
+
 const GridView = ({todos, setTodos, queryValue, register}) => {
   return (
     <div className="my-10">
       <div className="grid grid-cols-4 gap-4">
         {
-          todos.filter(todo => todo.title.toLowerCase().includes(queryValue)).map(todo => <div className='py-2 px-5 border-2 border-gray-100 rounded-lg shadow-md'>
+          todos.filter(todo => todo.title.toLowerCase().includes(queryValue)).map(todo => <div key={todo.id} className='py-2 px-5 border-2 border-gray-100 rounded-lg shadow-md'>
             <div className='flex justify-between'>
               <div>
-                <h4 className='uppercase font-semibold'>{todo.title}</h4>
-                <small className='text-xs'>{new Date(todo.createTime).toDateString()}</small>
+                <Link to={`/progress/${todo?.id}`} className="cursor-pointer">
+                  <h4 className='uppercase text-lg font-semibold'>{todo.title}</h4>
+                  <small className='text-xs'>{new Date(todo.createTime).toDateString()}</small>
+                </Link>
               </div>
               <input type="checkbox" id={todo.id} value={todo.id} {...register('objectIds')} className='checkbox checkbox-sm mt-2' />
             </div>
               <div className='py-3'>
-                  <span className='block leading-none pt-1 font-semibold'>{todo.completion}%</span>
+                  <span className='block text-xl leading-none pt-1 font-semibold'>{todo.completion}%</span>
                   <progress className="progress progress-success w-full" value={todo.completion} max="100"></progress>   
               </div>
               <span className='flex content-center items-center'>

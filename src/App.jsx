@@ -10,7 +10,8 @@ function App() {
       <Route path='/' element={<Layout/>}>
         <Route path='/' element={<Home/>}/>
         <Route path='/board' element={<ManageBoard/>}/>
-        <Route path='/progress' element={<WorkSpace/>}/>
+        <Route path='/progress/:id' element={<WorkSpace/>} />
+        <Route path='/progress' element={<WorkSpace/>} />
       </Route>
     </Routes>
   );

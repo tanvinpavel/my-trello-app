@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 const TableView = ({todos, setTodos, queryValue, backup, register, selectAll}) => {
@@ -52,28 +53,30 @@ const TableView = ({todos, setTodos, queryValue, backup, register, selectAll}) =
             <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
                     <thead>
-                        <tr>
+                        <tr className='text-gray-500'>
                             <th>
                                 <input type="checkbox" {...register('objectIds')} id="allSelect" defaultValue="undefined" ref={selectAll} className="checkbox" onChange={checkUncheckHandler} />
                             </th>
-                            <th>Title</th>
-                            <th>Progress</th>
-                            <th>Dead Line</th>
-                            <th>Status</th>
+                            <th className='text-sm font-extrabold'>Title</th>
+                            <th className='font-extrabold text-sm'>Progress</th>
+                            <th className='font-extrabold text-sm'>Dead Line</th>
+                            <th className='font-extrabold text-sm'>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            todos.filter(todo => todo.title.toLowerCase().includes(queryValue)).map(todo => <tr>
+                            todos.filter(todo => todo.title.toLowerCase().includes(queryValue)).map(todo => <tr key={todo.id}>
                                 <td className='p-3'>
                                     <input type="checkbox" id={todo.id} className="checkbox" value={todo.id} {...register("objectIds")} checked={todo?.isChecked || false} onChange={checkUncheckHandler} />
                                 </td>
                                 <td className='p-3'>
-                                    <p className='font-semibold'>{todo.title}</p>
-                                    <p className='text-xs'>{new Date(todo.createTime).toDateString()}</p>
+                                    <Link to={`/progress/${todo?.id}`} className="cursor-pointer">
+                                        <p className='text-lg font-semibold'>{todo.title}</p>
+                                        <p className='text-xs'>{new Date(todo.createTime).toDateString()}</p>
+                                    </Link>
                                 </td>
                                 <td className='p-3'>
-                                    <span className='block leading-none pt-1 font-semibold'>{todo.completion}%</span>
+                                    <span className='block text-xl leading-none pt-1 font-semibold'>{todo.completion}%</span>
                                     <progress className="progress progress-success w-10/12" value={todo.completion} max="100"></progress>   
                                 </td>
                                 <td className='p-3 font-semibold text-sm'>{new Date(todo.deadline).toDateString()}</td>

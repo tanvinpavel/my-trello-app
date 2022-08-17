@@ -1,25 +1,26 @@
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import TrelloContext from './context/TrelloContext';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en.json'
-import TaskContext from './context/TaskContext';
 
 TimeAgo.addDefaultLocale(en)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <TaskContext>
-      <App />
-    </TaskContext>
+    <TrelloContext>
+      <DndProvider backend={HTML5Backend}>
+        <App />
+      </DndProvider>
+    </TrelloContext>
   </BrowserRouter>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
