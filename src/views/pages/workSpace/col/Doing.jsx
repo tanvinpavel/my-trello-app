@@ -3,25 +3,15 @@ import { useDrop } from "react-dnd";
 import { useForm } from "react-hook-form";
 import ITEM_TYPE from "../../../../data/types";
 import useTrelloContext from '../../../../hooks/useTrelloContext';
-import { updateBoard } from '../../../../utility';
+import { completionPercentage, updateBoard } from '../../../../utility';
 import CustomDragLayer from '../CustomDragLayer';
 import Task from '../Task';
 
-const Doing = ({boardId}) => {
+const Doing = ({onDropFunc, moveItemFunc, boardId}) => {
     const { register, handleSubmit, reset } = useForm();
     const [toggleAddBtn, setToggleAddBtn] = useState(false);
     const {data, setData, myAllBoard} = useTrelloContext();
-    const status="doing";
-
-    const onDropFunc = (item, monitor, status) => {
-        if(item.progressStatus !== status){
-            setData(prevState => {
-                const newItems = prevState.doing.filter(i => i.id !== item.id).concat({ ...item, progressStatus: status });
-                console.log(newItems);
-                // return [ ...newItems ];
-            });
-        };
-    };
+    const status="doing"
     
     const [{ isOver, thisItem }, drop] = useDrop({
         accept: ITEM_TYPE,
@@ -34,37 +24,23 @@ const Doing = ({boardId}) => {
         })
     });
 
-    //sort items horizontally
-    const moveItemFunc = (dragIndex, hoverIndex) => {
-        const item = data.doing[dragIndex];
-        
-        setData(prevState => {
-            const newItems = prevState.doing.filter((item, index) => index !== dragIndex);
-            newItems.splice(hoverIndex, 0, item);
-            prevState.doing = newItems;
-
-            return  prevState;
-        });
-    };
-
     const addTaskHandler= (inputValues) => {
         if(inputValues.title.length > 0){
             inputValues.id = Math.ceil(Math.random()*500);
-            // console.log(inputValues);
             
-            data.doing = [...data.doing, inputValues];
-            
+            const updatedTask = [...data, inputValues];
+
             const updatedData = myAllBoard.map(item => {
                 if(item.id === boardId){
-                    item.tasks = data;
+                    item.tasks = updatedTask;
+                    item.completion =  completionPercentage(item.tasks);
                 }
 
                 return item;
             });
 
-            setData(data);
+            setData(updatedTask);
             updateBoard(updatedData);
-
             reset();
         }
     }
@@ -83,7 +59,7 @@ const Doing = ({boardId}) => {
                 </div>
                 <div>
                     {
-                        data.doing.length > 0 && data.doing.map((item, index) => item.progressStatus === status && <Task key={item.id} item={item} index={index} moveItemFunc={moveItemFunc}/>)
+                        data.length > 0 && data.map((item, index) => item.progressStatus === status && <Task key={item.id} item={item} index={index} moveItemFunc={moveItemFunc}/>)
                     }
                     {
                         (isOver && thisItem.progressStatus !== status) && <div className='h-11 rounded-md shadow-md bg-white p-2 my-2'></div>

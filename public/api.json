@@ -5,28 +5,24 @@
        "description":"simple description",
        "createTime":1656511749000,
        "deadline":"Thu Jun 30 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
-       "completion":100,
+       "completion":0,
        "status":"done",
        "favorite": true,
-       "tasks": {
-         "todo": [
-            {
-               "id": 343,
-               "title": "1st job",
-               "progressStatus": "todo"
-            },{
-               "id": 345,
-               "title": "2nd job",
-               "progressStatus": "todo"
-            },{
-               "id": 346,
-               "title": "3rd job",
-               "progressStatus": "todo"
-            }
-         ],
-         "doing": [],
-         "done": []
-       }
+       "tasks": [
+         {
+            "id": 343,
+            "title": "1st job",
+            "progressStatus": "todo"
+         },{
+            "id": 345,
+            "title": "2nd job",
+            "progressStatus": "todo"
+         },{
+            "id": 346,
+            "title": "3rd job",
+            "progressStatus": "todo"
+         }
+       ]
     },
     {
        "id":"2",

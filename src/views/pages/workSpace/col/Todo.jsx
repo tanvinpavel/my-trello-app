@@ -3,27 +3,15 @@ import { useDrop } from "react-dnd";
 import { useForm } from "react-hook-form";
 import ITEM_TYPE from '../../../../data/types';
 import useTrelloContext from '../../../../hooks/useTrelloContext';
-import { updateBoard } from '../../../../utility';
+import { completionPercentage, updateBoard } from '../../../../utility';
 import CustomDragLayer from '../CustomDragLayer';
 import Task from '../Task';
 
-const Todo = ({boardId}) => {
+const Todo = ({onDropFunc, moveItemFunc, boardId}) => {
     const { register, handleSubmit, reset } = useForm();
     const [toggleAddBtn, setToggleAddBtn] = useState(false);
     const {data, setData, myAllBoard} = useTrelloContext();
     const status = "todo";
-
-    const onDropFunc = (item, monitor, status) => {
-        if(item.progressStatus !== status){
-            setData(prevState => {
-                const restItems = prevState.todo.filter(i => i.id !== item.id);
-                const newItems = prevState.todo.filter(i => i.id !== item.id).concat({ ...item, progressStatus: status })
-                prevState.todo = newItems;
-                console.log(restItems);
-                return prevState;
-            });
-        };
-    };
 
     const [{ isOver, thisItem }, drop] = useDrop({
         accept: ITEM_TYPE,
@@ -36,37 +24,23 @@ const Todo = ({boardId}) => {
         })
     });
 
-    //sort items horizontally
-    const moveItemFunc = (dragIndex, hoverIndex) => {
-        const item = data.todo[dragIndex];
-        
-        setData(prevState => {
-            const newItems = prevState.todo.filter((item, index) => index !== dragIndex);
-            newItems.splice(hoverIndex, 0, item);
-            prevState.todo = newItems;
-
-            return  prevState;
-        });
-    };
-
-    //add new task
     const addTaskHandler = (inputValues) => {
         if(inputValues.title.length > 0){
             inputValues.id = Math.ceil(Math.random()*500);
             
-            data.todo = [...data.todo, inputValues];
-            
+            const updatedTask = [...data, inputValues];
+
             const updatedData = myAllBoard.map(item => {
                 if(item.id === boardId){
-                    item.tasks = data;
+                    item.tasks = updatedTask;
+                    item.completion =  completionPercentage(item.tasks);
                 }
 
                 return item;
             });
 
-            setData(data);
+            setData(updatedTask);
             updateBoard(updatedData);
-
             reset();
         }
     }
@@ -84,7 +58,7 @@ const Todo = ({boardId}) => {
                 </div>
                 <div>
                     {
-                        data.todo.length > 0 && data.todo.map((item, index) => (
+                        data.length > 0 && data.map((item, index) => (
                             item.progressStatus === status && (
                                 <Task key={item.id} item={item} index={index} moveItemFunc={moveItemFunc}/>
                             )

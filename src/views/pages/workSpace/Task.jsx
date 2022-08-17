@@ -20,8 +20,6 @@ const Task = memo(({item, index, moveItemFunc}) => {
             const dragIndex = item.index;
             const hoverIndex = index;
 
-            console.log(dragIndex, hoverIndex);
-
             if (dragIndex === hoverIndex) {
                 return
             }

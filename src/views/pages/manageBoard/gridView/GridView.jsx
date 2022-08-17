@@ -21,13 +21,13 @@ const GridView = ({todos, setTodos, queryValue, register}) => {
               </div>
               <span className='flex content-center items-center'>
                   {
-                      todo.status === 'todo' && <span className='rounded-full w-16 py-1 text-center bg-rose-100 text-xs font-medium text-rose-500'>To Do</span>
+                      todo.completion === 0 && <span className='rounded-full w-16 py-1 text-center bg-rose-100 text-xs font-medium text-rose-500'>To Do</span>
                   }
                   {
-                      todo.status === 'doing' && <span className='rounded-full w-16 py-1 text-center bg-yellow-100 text-xs font-medium text-yellow-500'>Doing</span>
+                      todo.completion > 0 && todo.completion < 100 && <span className='rounded-full w-16 py-1 text-center bg-yellow-100 text-xs font-medium text-yellow-500'>Doing</span>
                   }
                   {
-                      todo.status === 'done' && <span className='rounded-full w-16 py-1 text-center bg-green-100 text-xs font-medium text-green-500'>Done</span>
+                      todo.completion === 100 && <span className='rounded-full w-16 py-1 text-center bg-green-100 text-xs font-medium text-green-500'>Done</span>
                   }
               </span>
           </div>)
