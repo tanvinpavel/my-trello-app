@@ -13,6 +13,7 @@ const ManageBoard = () => {
     const {register, handleSubmit} = useForm();
     const selectAll = useRef();
     const {myAllBoard} = useTrelloContext();
+    const [activeBtn, setActiveBtn] = useState('all');
 
     useEffect(()=>{
         if(!myAllBoard.length){
@@ -26,9 +27,9 @@ const ManageBoard = () => {
 
     const deleteGridSelectedItemHandler = (data) => {
         const {objectIds} = data;
-        console.log(objectIds);
+        
         const restData = todos.filter(item => !objectIds.includes(item.id));
-        console.log(restData);
+        
         const updatedData = deleteBoard(restData);
         setTodos(updatedData);
     }
@@ -51,8 +52,10 @@ const ManageBoard = () => {
 
     const filterHandler = (e) => {
         const filterType = e.target.innerHTML.toLowerCase();
+        setActiveBtn(filterType);
+
         const allData = myAllBoard;
-        
+
         if(filterType === "all"){
             setTodos(myAllBoard);
         }else if(filterType === 'running'){
@@ -84,10 +87,10 @@ const ManageBoard = () => {
             {/* Action bar */}
             <div className='flex flex-wrap gap-y-2 gap-x-2 lg:gap-x-0  lg:justify-between mt-10'>
                 <div className="btn-group">
-                    <button onClick={filterHandler} className="btn btn-active btn-sm text-xs">All</button>
-                    <button onClick={filterHandler} className="btn btn-sm text-xs">Running</button>
-                    <button onClick={filterHandler} className="btn btn-sm text-xs">Completed</button>
-                    <button onClick={filterHandler} className="btn btn-sm text-xs">Uncompleted</button>
+                    <button onClick={filterHandler} className={activeBtn === 'all' ? "btn btn-sm text-xs btn-active" : "btn btn-sm text-xs"}>All</button>
+                    <button onClick={filterHandler} className={activeBtn === 'running' ? "btn btn-sm text-xs btn-active" : "btn btn-sm text-xs"}>Running</button>
+                    <button onClick={filterHandler} className={activeBtn === 'completed' ? "btn btn-sm text-xs btn-active" : "btn btn-sm text-xs"}>Completed</button>
+                    <button onClick={filterHandler} className={activeBtn === 'uncompleted' ? "btn btn-sm text-xs btn-active" : "btn btn-sm text-xs"}>Uncompleted</button>
                 </div>
                 <div className="btn-group">
                     <button className={view === 'table' ? 'btn btn-sm btn-active' : 'btn btn-sm'} onClick={()=>setView('table')}>

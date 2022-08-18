@@ -6,7 +6,7 @@
        "createTime":1656511749000,
        "deadline":"Thu Jun 30 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
        "completion":0,
-       "status":"done",
+       "status":"todo",
        "favorite": true,
        "tasks": [
          {
@@ -40,7 +40,7 @@
        "createTime":1656511749000,
        "deadline":"Mon Jun 27 2022 19:57:42 GMT+0600 (Bangladesh Standard Time)",
        "completion":15,
-       "status":"todo"
+       "status":"doing"
     },
     {
        "id":"4",

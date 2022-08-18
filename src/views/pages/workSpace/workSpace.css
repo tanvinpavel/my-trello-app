@@ -1,3 +1,9 @@
 .workSpace-height{
     height: calc(100vh - 302px);
 }
+.toaster > span{
+    display: none;
+}
+.toaster:hover > span{
+    display: block;
+}

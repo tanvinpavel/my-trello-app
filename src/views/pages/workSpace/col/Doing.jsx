@@ -7,7 +7,7 @@ import { completionPercentage, updateBoard } from '../../../../utility';
 import CustomDragLayer from '../CustomDragLayer';
 import Task from '../Task';
 
-const Doing = ({onDropFunc, moveItemFunc, boardId}) => {
+const Doing = ({onDropFunc, moveItemFunc, boardId, deleteSingleTask}) => {
     const { register, handleSubmit, reset } = useForm();
     const [toggleAddBtn, setToggleAddBtn] = useState(false);
     const {data, setData, myAllBoard} = useTrelloContext();
@@ -33,7 +33,9 @@ const Doing = ({onDropFunc, moveItemFunc, boardId}) => {
             const updatedData = myAllBoard.map(item => {
                 if(item.id === boardId){
                     item.tasks = updatedTask;
-                    item.completion =  completionPercentage(item.tasks);
+                    const percentage = completionPercentage(item.tasks);
+                    item.completion = percentage;
+                    item.status = percentage === 0 ? "todo" : percentage > 0 && percentage <100 ? "doing" : percentage === 100 && 'done';
                 }
 
                 return item;
@@ -59,7 +61,8 @@ const Doing = ({onDropFunc, moveItemFunc, boardId}) => {
                 </div>
                 <div>
                     {
-                        data.length > 0 && data.map((item, index) => item.progressStatus === status && <Task key={item.id} item={item} index={index} moveItemFunc={moveItemFunc}/>)
+                        data.length > 0 && data.map((item, index) => item.progressStatus === status && 
+                            <Task deleteSingleTask={deleteSingleTask}  key={item.id} item={item} index={index} moveItemFunc={moveItemFunc}/>)
                     }
                     {
                         (isOver && thisItem.progressStatus !== status) && <div className='h-11 rounded-md shadow-md bg-white p-2 my-2'></div>
